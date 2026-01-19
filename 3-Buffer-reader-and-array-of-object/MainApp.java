@@ -91,7 +91,7 @@ class Display {
 
 class MainApp {
     public static void main(String[] args) throws IOException {
-
+        
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
         System.out.print("Enter number of students : ");

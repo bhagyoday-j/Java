@@ -2,13 +2,12 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.IOException;
 
-// BASE ABSTRACT CLASS 
 abstract class Person {
     protected String name;
     protected int rollNo;
 
-    Person() {
-        this.name = "NA";
+    Person(String name) {
+        this.name = name;
         this.rollNo = 0;
     }
 
@@ -20,8 +19,7 @@ abstract class Person {
         this.rollNo = Integer.parseInt(br.readLine());
     }
 
-    // Overloaded method
-    void inputStudent(String name, int rollNo) {
+    void inputStudent(String name, int rollNo) { //method overloading
         this.name = name;
         this.rollNo = rollNo;
     }
@@ -33,9 +31,8 @@ abstract class Person {
 class Student extends Person {
     int m1, m2, m3;
 
-    // USING super() constructor
-    Student() {
-        super(); // calls Person constructor
+    Student(String name) {
+        super(name);
     }
 
     void inputMarks(BufferedReader br) throws IOException {
@@ -77,7 +74,10 @@ class Student extends Person {
 
 class UGStudent extends Student {
 
-    // USING super method
+    UGStudent(String name) {
+        super(name);
+    }
+
     @Override
     void displayType() {
         super.displayType(); // calls Student displayType
@@ -86,7 +86,7 @@ class UGStudent extends Student {
 
     @Override
     char calculateGrade() {
-        int avg = super.total() / 3; // using super method
+        int avg = super.total() / 3; 
         if (avg >= 70) return 'A';
         else if (avg >= 50) return 'B';
         else if (avg >= 35) return 'C';
@@ -97,15 +97,19 @@ class UGStudent extends Student {
 
 class PGStudent extends Student {
 
+    PGStudent(String name) {
+        super(name);
+    }
+
     @Override
     void displayType() {
         System.out.println("Student Type : Postgraduate");
-        System.out.println("Name (via super) : " + super.name); // accessing parent variable
+        System.out.println("Name (via super) : " + super.name); 
     }
 
     @Override
     char calculateGrade() {
-        int avg = super.total() / 3; // using parent method
+        int avg = super.total() / 3; 
         if (avg >= 75) return 'A';
         else if (avg >= 55) return 'B';
         else if (avg >= 40) return 'C';
@@ -113,7 +117,7 @@ class PGStudent extends Student {
     }
 }
 
-// MAIN CLASS
+// main class
 public class MainApp {
     public static void main(String[] args) throws IOException {
 
@@ -131,16 +135,15 @@ public class MainApp {
 
             switch (choice) {
                 case 2:
-                    students[i] = new UGStudent();
+                    students[i] = new UGStudent("NA");
                     break;
                 case 3:
-                    students[i] = new PGStudent();
+                    students[i] = new PGStudent("NA");
                     break;
                 default:
-                    students[i] = new Student();
+                    students[i] = new Student("NA");
             }
 
-            // calling parent method through child object
             students[i].inputStudent(br);
             students[i].inputMarks(br);
         }

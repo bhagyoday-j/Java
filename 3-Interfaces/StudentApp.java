@@ -2,46 +2,41 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.IOException;
 
-// base abstract class 
-abstract class Person {
-    protected String name;
-    protected int rollNo;
-
-    Person() {
-        this.name = "NA";
-        this.rollNo = 0;
-    }
-
-    void inputStudent(BufferedReader br) throws IOException {
-        System.out.print("Enter Student Name : ");
-        this.name = br.readLine();
-
-        System.out.print("Enter Student Roll No : ");
-        this.rollNo = Integer.parseInt(br.readLine());
-    }
-
-    // Overloaded method
-    void inputStudent(String name, int rollNo) {
-        this.name = name;
-        this.rollNo = rollNo;
-    }
-
-    abstract void displayType();
+interface Person {
+    void inputStudent(BufferedReader br) throws IOException;
+    void displayType();
 }
 
+interface StudentOperations {
+    void inputMarks(BufferedReader br) throws IOException;
+    int total();
+    char calculateGrade();
+}
 
-class Student extends Person {
-    int m1, m2, m3;
+interface StudentDetails extends Person, StudentOperations {
+    void showResult();
+}
 
-    // usign super() constructor
-    Student() {
-        super(); // calls Person constructor
+class Student implements StudentDetails {
+
+    protected String name;
+    protected int rollNo;
+    protected int m1, m2, m3;
+
+    @Override
+    public void inputStudent(BufferedReader br) throws IOException {
+        System.out.print("Enter Student Name : ");
+        name = br.readLine();
+
+        System.out.print("Enter Student Roll No : ");
+        rollNo = Integer.parseInt(br.readLine());
     }
 
-    void inputMarks(BufferedReader br) throws IOException {
-        this.m1 = readMarks(br, "Subject 1");
-        this.m2 = readMarks(br, "Subject 2");
-        this.m3 = readMarks(br, "Subject 3");
+    @Override
+    public void inputMarks(BufferedReader br) throws IOException {
+        m1 = readMarks(br, "Subject 1");
+        m2 = readMarks(br, "Subject 2");
+        m3 = readMarks(br, "Subject 3");
     }
 
     private int readMarks(BufferedReader br, String subject) throws IOException {
@@ -56,37 +51,46 @@ class Student extends Person {
         return marks;
     }
 
-    final int total() {
-        return this.m1 + this.m2 + this.m3;
+    @Override
+    public int total() {
+        return m1 + m2 + m3;
     }
 
     @Override
-    void displayType() {
-        System.out.println("Student Type : General Student");
-    }
-
-    char calculateGrade() {
+    public char calculateGrade() {
         int avg = total() / 3;
         if (avg >= 80) return 'A';
         else if (avg >= 60) return 'B';
         else if (avg >= 40) return 'C';
         else return 'F';
     }
-}
 
-
-class UGStudent extends Student {
-
-    // using super method
     @Override
-    void displayType() {
-        super.displayType(); // calls Student displayType
-        System.out.println("Specialization : Undergraduate");
+    public void displayType() {
+        System.out.println("Student Type : General Student");
     }
 
     @Override
-    char calculateGrade() {
-        int avg = super.total() / 3; // using super method
+    public void showResult() {
+        displayType();
+        System.out.println("Name        : " + name);
+        System.out.println("Roll No     : " + rollNo);
+        System.out.println("Total Marks : " + total());
+        System.out.println("Grade       : " + calculateGrade());
+        System.out.println("Percentage  : " + (total() / 3) + "%");
+    }
+}
+
+class UGStudent extends Student {
+
+    @Override
+    public void displayType() {
+        System.out.println("Student Type : Undergraduate");
+    }
+
+    @Override
+    public char calculateGrade() {
+        int avg = total() / 3;
         if (avg >= 70) return 'A';
         else if (avg >= 50) return 'B';
         else if (avg >= 35) return 'C';
@@ -94,18 +98,16 @@ class UGStudent extends Student {
     }
 }
 
-
 class PGStudent extends Student {
 
     @Override
-    void displayType() {
+    public void displayType() {
         System.out.println("Student Type : Postgraduate");
-        System.out.println("Name (via super) : " + super.name); // accessing parent variable
     }
 
     @Override
-    char calculateGrade() {
-        int avg = super.total() / 3; // using parent method
+    public char calculateGrade() {
+        int avg = total() / 3;
         if (avg >= 75) return 'A';
         else if (avg >= 55) return 'B';
         else if (avg >= 40) return 'C';
@@ -113,8 +115,8 @@ class PGStudent extends Student {
     }
 }
 
-// main class
-public class MainApp {
+// Main Class
+public class StudentApp {
     public static void main(String[] args) throws IOException {
 
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -122,7 +124,7 @@ public class MainApp {
         System.out.print("Enter number of students : ");
         int n = Integer.parseInt(br.readLine());
 
-        Student[] students = new Student[n];
+        StudentDetails[] students = new StudentDetails[n];
 
         for (int i = 0; i < n; i++) {
             System.out.println("\n1. General  2. UG  3. PG");
@@ -140,19 +142,13 @@ public class MainApp {
                     students[i] = new Student();
             }
 
-            // calling parent method through child object
             students[i].inputStudent(br);
             students[i].inputMarks(br);
         }
 
-        for (Student s : students) {
+        for (StudentDetails s : students) {
             System.out.println("\n--- Student Result ---");
-            s.displayType();
-            System.out.println("Name        : " + s.name);
-            System.out.println("Roll No     : " + s.rollNo);
-            System.out.println("Total Marks : " + s.total());
-            System.out.println("Grade       : " + s.calculateGrade());
-            System.out.println("Percentage  : " + s.total() / 3 + "%");
+            s.showResult();
         }
     }
 }

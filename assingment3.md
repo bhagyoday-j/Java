@@ -30,7 +30,8 @@ interfaces
 
 # Default Method Fundamentals
 
-
-2 interfaces
-1 derived interface
-1 class
+Write a java program to implement the concept of interface.
+at least 2 interfaces
+at least 1 derived interface
+at least 2 class implements interface
+at least 1 nested interface

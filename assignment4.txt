@@ -1,0 +1,41 @@
+Package
+
+-to create gr
+-manageable chunks
+-having name and visibility control
+-for security
+-for reused
+-fully qualified name
+
+Java Foundation Packages
+-java.lang
+-java.util
+-java.io
+-java.net
+-java.applet
+-java.awt
+
+Accessing classes from Packages
+-java.lang.Math.sqrt(x);
+-import java.lang.Math
+ Math.sqrt(x);
+-import Package.class;
+ import Package.*;
+
+Defining a Package
+-Package MyPackage; -> user define Package
+-Package created is store in file system
+-should be directory of that name
+-can create hirarchi for Packages
+ package pkg1[.pkg2[.pkg3]];
+-cannot rename a package without rename the directory 
+
+Creating package
+
+package MyPackage;
+public class ClassA {
+
+}
+class ClassB {
+  
+}

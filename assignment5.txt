@@ -1,0 +1,8 @@
+2 exceptions
+defalult exceptions handling 
+
+2 standard
+finally
+2 catch
+
+1 user define exceptions
